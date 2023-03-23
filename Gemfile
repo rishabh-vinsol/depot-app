@@ -65,6 +65,8 @@ group :development do
   # gem "spring"
 end
 
+gem 'i18n-js', '~> 4.2.2'
+
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
