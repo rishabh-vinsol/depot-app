@@ -3,4 +3,7 @@ import "@hotwired/turbo-rails"
 import "controllers"
 
 import Rails from "@rails/ujs"
-Rails.start();import "channels"
+Rails.start();
+import "channels"
+import "trix"
+import "@rails/actiontext"
