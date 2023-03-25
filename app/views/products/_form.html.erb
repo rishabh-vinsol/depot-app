@@ -26,6 +26,18 @@
     <%= form.text_field :price %>
   </div>
   <div>
+    <%= form.label :enabled %>
+    <%= form.check_box :enabled %>
+  </div>
+  <div>
+    <%= form.label :discount_price, style: "display: block" %>
+    <%= form.text_field :discount_price %>
+  </div>
+  <div>
+    <%= form.label :permalink, style: "display: block" %>
+    <%= form.text_field :permalink %>
+  </div>
+  <div>
     <%= form.submit %>
   </div>
 <% end %>
