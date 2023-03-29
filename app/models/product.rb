@@ -10,8 +10,8 @@ class Product < ApplicationRecord
   before_destroy :ensure_not_referenced_by_any_line_item
   validates :title, :description, :image_url, presence: true
   validates_length_of :words_in_description, minimum: 5, maximum: 10,
-                                             too_short: "Description is too short (minimum is 5 characters)",
-                                             too_long: "Description is too long (maximum is 10 characters)"
+                                             too_short: "Description is too short (minimum is %{count} characters)",
+                                             too_long: "Description is too long (maximum is %{count} characters)"
   validates :price, allow_blank: true, numericality: { greater_than: :discount_price }
   # validate :price_greater_than_discount_price
   validates :title, uniqueness: true
