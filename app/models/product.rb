@@ -1,12 +1,11 @@
 class UrlValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    record.errors.add attribute, (options[:message] || "is not a valid image format") unless value =~ URL_FORMAT
+    record.errors.add attribute, (options[:message] || "is not a valid image format") unless value =~ /\.(gif|jpg|png|jpeg)\z/i
   end
 end
 
 class Product < ApplicationRecord
   PERMALINK_FORMAT = /[a-zA-Z0-9-]/.freeze
-  URL_FORMAT = /\.(gif|jpg|png|jpeg)\z/i.freeze
 
   has_many :line_items
   has_many :orders, through: :line_items
