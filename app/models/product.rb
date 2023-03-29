@@ -1,12 +1,10 @@
 class UrlValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    record.errors.add attribute, (options[:message] || "is not a valid image format") unless value =~ /\.(gif|jpg|png|jpeg)\z/i
+    record.errors.add attribute, (options[:message] || "is not a valid image format") unless value =~ IMAGE_FORMAT
   end
 end
 
 class Product < ApplicationRecord
-  PERMALINK_FORMAT = /[a-zA-Z0-9-]/.freeze
-
   has_many :line_items
   has_many :orders, through: :line_items
   before_destroy :ensure_not_referenced_by_any_line_item
@@ -30,11 +28,11 @@ class Product < ApplicationRecord
   end
 
   def words_in_permalink
-    permalink.split("-") if permalink
+    permalink&.split("-")
   end
 
   def words_in_description
-    description.scan(/\w+/) if description
+    description&.scan(/\w+/)
   end
 
   # ensure that there are no line items referencing this product
