@@ -1,7 +1,7 @@
 class EmailValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     record.errors.add(:email, options[:message] || "is not valid") unless
-      value =~ /^[\w\.-]+@([\w-]+\.)+[\w-]{2,4}$/
+      value =~ EMAIL_FORMAT
   end
 end
 
