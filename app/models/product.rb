@@ -5,6 +5,8 @@ class UrlValidator < ActiveModel::EachValidator
 end
 
 class Product < ApplicationRecord
+  after_initialize :set_title_default, :set_discount_price_default
+
   has_many :line_items
   has_many :orders, through: :line_items
   before_destroy :ensure_not_referenced_by_any_line_item
@@ -20,6 +22,14 @@ class Product < ApplicationRecord
   validates_length_of :words_in_permalink, minimum: 3, message: I18n.t("product.permalink.too_short_message")
 
   private
+
+  def set_discount_price_default
+    self.discount_price ||= price
+  end
+
+  def set_title_default
+    self.title ||= "abc"
+  end
 
   def price_greater_than_discount_price
     if price && discount_price
