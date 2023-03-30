@@ -59,3 +59,9 @@ es:
         one: "1 error ha impedido que este %{model} se guarde"
         other: "%{count} erreres han impedido que este %{model} se guarde"
   thanks: "Gracias por su pedido"
+  product: 
+    desciption: 
+      too_short_message: "La descripción es demasiado corta (el mínimo es %{count} caracteres)"
+      too_long_message: "La descripción es demasiado larga (el máximo es %{count} caracteres)"
+    permalink:
+      too_short_message: "El enlace permanente es demasiado corto (el mínimo es %{count} caracteres)"
