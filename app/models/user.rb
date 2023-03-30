@@ -6,6 +6,7 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  after_create_commit :send_welcome_email
   after_destroy :ensure_an_admin_remains
   validates :name, presence: true, uniqueness: true
   validates :email, uniqueness: true, email: true
@@ -15,6 +16,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def send_welcome_email
+    UserMailer.welcome_email(self.id).deliver_later
+  end
 
   def ensure_an_admin_remains
     if User.count.zero?
