@@ -6,6 +6,8 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  before_update :check_admin_email
+  before_destroy :check_admin_email
   after_create_commit :send_welcome_email
   after_destroy :ensure_an_admin_remains
   validates :name, presence: true, uniqueness: true
@@ -16,6 +18,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def check_admin_email
+    throw :abort if email == 'admin@depot.com'
+  end
 
   def send_welcome_email
     UserMailer.welcome_email(self.id).deliver_later
