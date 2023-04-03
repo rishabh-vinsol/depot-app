@@ -20,7 +20,10 @@ class User < ApplicationRecord
   private
 
   def check_admin_email
-    throw :abort if email == 'admin@depot.com'
+    if email == ADMIN_EMAIL
+      errors.add(:base, "Cannot update/delete user 'admin'")
+      throw :abort 
+    end
   end
 
   def send_welcome_email
