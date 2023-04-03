@@ -56,7 +56,7 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    notice = @user.destroy ? "User was successfully destroyed." : "Admin cannot be deleted"
+    notice = @user.destroy ? t(".success") : @user.errors[:base]
 
     respond_to do |format|
       format.html { redirect_to users_url, notice: notice }
