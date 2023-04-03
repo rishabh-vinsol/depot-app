@@ -5,8 +5,8 @@ class UrlValidator < ActiveModel::EachValidator
 end
 
 class Product < ApplicationRecord
-  after_initialize :set_title_default, :set_discount_price_default
-
+  after_initialize :set_title_default
+  before_save :set_discount_price_default
   has_many :line_items
   has_many :orders, through: :line_items
   before_destroy :ensure_not_referenced_by_any_line_item
