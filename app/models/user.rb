@@ -6,6 +6,8 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  has_many :orders, dependent: :destroy
+  has_many :line_items, through: :orders
   before_update :check_admin_email
   before_destroy :check_admin_email
   after_create_commit :send_welcome_email
@@ -22,7 +24,7 @@ class User < ApplicationRecord
   def check_admin_email
     if email == ADMIN_EMAIL
       errors.add(:base, "Cannot update/delete user 'admin'")
-      throw :abort 
+      throw :abort
     end
   end
 

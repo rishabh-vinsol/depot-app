@@ -6,6 +6,7 @@ class Order < ApplicationRecord
          "Credit card" => 1,
          "Purchase order" => 2,
        }
+  belongs_to :user
   has_many :line_items, dependent: :destroy
   validates :name, :address, :email, presence: true
   validates :pay_type, inclusion: pay_types.keys
@@ -48,5 +49,9 @@ class Order < ApplicationRecord
     else
       raise payment_result.error
     end
+  end
+
+  def total_amount
+    line_items.sum { |item| item.total_price }
   end
 end

@@ -1,0 +1,19 @@
+<% @orders.find_each do |order| %>
+  <%= render order %>
+  <h3>Items</h3>
+  <table>
+    <tr>
+      <th>Quantity</th>
+      <th>Product</th>
+      <th>Price</th>
+    </tr>
+    <% order.line_items.each do |item| %>
+      <%= render item %>
+    <% end %>
+    <tr>
+      <td></td>
+      <th>Total Amount</th>
+      <th>$<%= order.total_amount %></th>
+    </tr>
+  </table>
+<% end %>
