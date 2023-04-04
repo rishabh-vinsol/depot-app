@@ -7,9 +7,10 @@ end
 class Product < ApplicationRecord
   after_initialize :set_title_default
   before_save :set_discount_price_default
-  has_many :line_items
+  has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
-  before_destroy :ensure_not_referenced_by_any_line_item
+  has_many :carts, through: :line_items
+  # before_destroy :ensure_not_referenced_by_any_line_item
   validates :title, :description, :image_url, presence: true
   validates_length_of :words_in_description, minimum: 5, maximum: 10
   validates :price, allow_blank: true, numericality: { greater_than: :discount_price }
