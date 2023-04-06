@@ -59,3 +59,15 @@ es:
         one: "1 error ha impedido que este %{model} se guarde"
         other: "%{count} erreres han impedido que este %{model} se guarde"
   thanks: "Gracias por su pedido"
+  activerecord:
+    errors: 
+      models: 
+        product:
+          attributes:
+            words_in_permalink:
+              too_short: "El enlace permanente es demasiado corto (el mínimo es %{count} caracteres)"
+            words_in_description:
+              too_short: "La descripción es demasiado corta (el mínimo es %{count} caracteres)"
+              too_long: "La descripción es demasiado larga (el máximo es %{count} caracteres)"
+            base:
+              price_less_than_discount: "El precio debe ser mayor que precio_descuento"

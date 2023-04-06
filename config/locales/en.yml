@@ -80,3 +80,15 @@ en:
       
   thanks: "Thank you for your order"
 
+  activerecord:
+    errors: 
+      models: 
+        product:
+          attributes:
+            words_in_permalink:
+              too_short: "Permalink is too short (minimum is %{count} characters) "
+            words_in_description:
+              too_short: "Description is too short (minimum is %{count} characters)"
+              too_long: "Description is too long (maximum is %{count} characters)"
+            base:
+              price_less_than_discount: "Price must be greater than discount_price"
