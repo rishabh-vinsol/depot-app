@@ -80,6 +80,10 @@ en:
       
   thanks: "Thank you for your order"
 
+  users:
+    destroy:
+      success: "User was successfully destroyed."
+
   activerecord:
     errors: 
       models: 
