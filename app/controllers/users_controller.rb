@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[ show edit update destroy ]
+  rescue_from ActiveRecord::RecordNotFound, with: :invalid_user
 
   # GET /users or /users.json
   def index
@@ -69,12 +70,12 @@ class UsersController < ApplicationController
   end
 
   def orders
-    @user = User.find(session[:user_id])
+    @user = User.find(params[:user_id])
     @orders = @user.orders
   end
 
   def line_items
-    @user = User.find(session[:user_id])
+    @user = User.find(params[:user_id])
     @line_items = @user.line_items.page(params[:page])
   end
 
@@ -88,5 +89,10 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     params.require(:user).permit(:name, :password, :password_confirmation, :email)
+  end
+
+  def invalid_user
+    logger.error "Attempt to access invalid user #{params[:user_id]}"
+    redirect_to users_url, status: :not_found, notice: "Invalid user"
   end
 end
