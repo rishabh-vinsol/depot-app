@@ -20,6 +20,10 @@ class Product < ApplicationRecord
   validates :permalink, uniqueness: true, format: { with: PERMALINK_FORMAT }
   validates_length_of :words_in_permalink, minimum: 3
 
+  scope :enabled_products, -> {
+    where(enabled: true)
+  }
+
   private
 
   def set_discount_price_default
