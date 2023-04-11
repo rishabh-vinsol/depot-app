@@ -7,9 +7,11 @@ end
 class Product < ApplicationRecord
   after_initialize :set_title_default
   before_save :set_discount_price_default
+  after_create_commit :increment_product_count
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  belongs_to :category, counter_cache: true
   # before_destroy :ensure_not_referenced_by_any_line_item
   validates :title, :description, :image_url, presence: true
   validates_length_of :words_in_description, minimum: 5, maximum: 10
@@ -21,15 +23,15 @@ class Product < ApplicationRecord
   validates_length_of :words_in_permalink, minimum: 3
 
   scope :enabled_products, -> {
-    where(enabled: true)
-  }
+          where(enabled: true)
+        }
 
   scope :present_in_line_items, -> {
-    joins(:line_items).distinct
-  }
+          joins(:line_items).distinct
+        }
 
   def self.titles_present_in_line_items
-    joins(:line_items).distinct.inject([]) {|arr, obj| arr.push(obj.title)}
+    joins(:line_items).distinct.inject([]) { |arr, obj| arr.push(obj.title) }
   end
 
   private
@@ -54,6 +56,12 @@ class Product < ApplicationRecord
 
   def words_in_description
     description&.scan(/\w+/)
+  end
+
+  def increment_product_count
+    if category.parent.present?
+      category.parent.increment!(:products_count, 1)
+    end
   end
 
   # ensure that there are no line items referencing this product
