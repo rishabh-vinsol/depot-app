@@ -29,7 +29,7 @@ class Product < ApplicationRecord
   }
 
   def self.titles_present_in_line_items
-    joins(:line_items).distinct
+    joins(:line_items).select(:id, :title).distinct
   end
 
   private
