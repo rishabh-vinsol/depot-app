@@ -22,7 +22,7 @@ class User < ApplicationRecord
   private
 
   def check_admin_email
-    if User.find(id).email == ADMIN_EMAIL
+    if email_was == ADMIN_EMAIL
       errors.add(:base, "Cannot update/delete user 'admin'")
       throw :abort
     end

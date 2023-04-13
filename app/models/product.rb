@@ -31,7 +31,7 @@ class Product < ApplicationRecord
         }
 
   def self.titles_present_in_line_items
-    joins(:line_items).distinct.inject([]) { |arr, obj| arr.push(obj.title) }
+    joins(:line_items).select(:id, :title).distinct
   end
 
   private
