@@ -24,6 +24,14 @@ class Product < ApplicationRecord
     where(enabled: true)
   }
 
+  scope :present_in_line_items, -> {
+    joins(:line_items).distinct
+  }
+
+  def self.titles_present_in_line_items
+    joins(:line_items).select(:id, :title).distinct
+  end
+
   private
 
   def set_discount_price_default
