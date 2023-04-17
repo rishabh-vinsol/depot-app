@@ -8,6 +8,8 @@ end
 class User < ApplicationRecord
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
+  has_one :address, inverse_of: :user, dependent: :destroy
+  accepts_nested_attributes_for :address, allow_destroy: true
   before_update :check_admin_email
   before_destroy :check_admin_email
   after_create_commit :send_welcome_email
