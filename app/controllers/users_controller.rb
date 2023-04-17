@@ -42,7 +42,6 @@ class UsersController < ApplicationController
 
   # PATCH/PUT /users/1 or /users/1.json
   def update
-    debugger
     respond_to do |format|
       if @user.update(user_params)
         format.html {
