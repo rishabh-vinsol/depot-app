@@ -1,0 +1,12 @@
+<% if notice %>
+  <aside id="notice"><%= notice %></aside>
+<% end %>
+<h1>Categories</h1>
+<table>
+  <tr>
+    <th>Category Name</th>
+    <th>Parent Category</th>
+    <th>Number of Products</th>
+  </tr>
+  <%= render @categories %>
+</table>
