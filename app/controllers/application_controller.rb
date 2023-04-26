@@ -3,8 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :authorize
   before_action :increment_hit_counter
   before_action :set_start_time
-  # before_action :check_session_timeout
-  # before_action :update_last_activity_at
+  before_action :check_user_activity_time
   after_action :add_response_time
 
   attr_accessor :last_activity
@@ -12,9 +11,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def authorize
-    unless User.find_by(id: session[:user_id])
+    unless current_user
       redirect_to login_url, notice: "Please log in"
     end
+  end
+
+  def current_user
+    @user_logged_in ||= User.find_by(id: session[:user_id])
   end
 
   def set_i18n_locale_from_params
@@ -44,15 +47,13 @@ class ApplicationController < ActionController::Base
     response.headers["x-responded-in"] = "#{time_taken}ms"
   end
 
-  # def update_last_activity_at
-  #   debugger
-  #   session["last_activity_time"] = Time.now
-  # end
-
-  # def check_session_timeout
-  #   debugger
-  #   # if session['last_activity_time'] && session['last_activity_time'] < 10.seconds.ago
-  #   #   redirect_to sessions_destroy_path
-  #   # end
-  # end
+  def check_user_activity_time
+    return unless current_user
+    if current_user.last_activity_time < 10.seconds.ago
+      session[:user_id] = nil
+      redirect_to login_url,  alert: "You have been logged out due to inactivity."
+    else
+      current_user.update_column(:last_activity_time, Time.current)
+    end
+  end
 end
