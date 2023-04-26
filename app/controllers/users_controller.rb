@@ -29,7 +29,7 @@ class UsersController < ApplicationController
       if @user.save
         format.html {
           redirect_to users_url,
-                      notice: "User #{@user.name} was successfully created."
+                      notice: t(".created")
         }
 
         format.json { render :show, status: :created, location: @user }

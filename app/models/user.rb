@@ -6,6 +6,11 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  enum language: {
+    "English" => "en",
+    "Spanish" => "es",
+  }
+
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
   has_one :address, inverse_of: :user, dependent: :destroy
@@ -16,6 +21,7 @@ class User < ApplicationRecord
   after_destroy :ensure_an_admin_remains
   validates :name, presence: true, uniqueness: true
   validates :email, uniqueness: true, email: true
+  validates :language, inclusion: languages.keys
   has_secure_password
 
   class Error < StandardError

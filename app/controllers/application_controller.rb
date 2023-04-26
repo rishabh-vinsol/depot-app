@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :set_start_time
   # before_action :check_session_timeout
   # before_action :update_last_activity_at
+  around_action :setup_locale
   after_action :add_response_time
 
   attr_accessor :last_activity
@@ -12,9 +13,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def authorize
-    unless User.find_by(id: session[:user_id])
+    unless current_user
       redirect_to login_url, notice: "Please log in"
     end
+  end
+
+  def current_user
+    @user_logged_in ||= User.find_by(id: session[:user_id])
   end
 
   def set_i18n_locale_from_params
@@ -42,6 +47,10 @@ class ApplicationController < ActionController::Base
   def add_response_time
     time_taken = (Time.now - @start_time) * 1000
     response.headers["x-responded-in"] = "#{time_taken}ms"
+  end
+
+  def setup_locale(&action)
+    I18n.with_locale(User.languages[@user_logged_in.try(:language) || :en], &action)
   end
 
   # def update_last_activity_at

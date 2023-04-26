@@ -1,25 +1,27 @@
 class OrderMailer < ApplicationMailer
   default from: "Sam Ruby <depot@example.com>"
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.order_mailer.received.subject
-  #
-  def received(order)
-    @order = order
+  def received
+    @order = params[:order]
 
-    mail to: order.email, subject: "Pragmatic Store Order Confirmation"
+    @order.line_items.each do |line_item|
+      product = line_item.product
+      product_images = product.images.to_a
+
+      attachments.inline["#{product.title}_1"] = product_images.shift.download
+      product_images.each_with_index do |image, index|
+        attachments["#{product.title}_#{index + 2}"] = image.download
+      end
+    end
+
+    I18n.with_locale(User.languages[@order.user.language]) do
+      mail to: email_address_with_name(@order.email, @order.name)
+    end
   end
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
-  #
-  #   en.order_mailer.shipped.subject
-  #
-  def shipped(order)
-    @order = order
+  def shipped
+    @order = params[:order]
 
-    mail to: order.email, subject: 'Pragmatic Store Order Shipped'
+    mail to: @order.email
   end
 end

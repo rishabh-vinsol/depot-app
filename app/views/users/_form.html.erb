@@ -19,24 +19,6 @@
       <%= form.label :email, 'Email:' %>
       <%= form.text_field :email, size: 40 %>
     </div>
-    <%= form.fields_for :address do |address_form| %>
-      <div class="field">
-        <%= address_form.label :state, 'State:' %>
-        <%= address_form.text_field :state %>
-      </div>
-      <div class="field">
-        <%= address_form.label :city, 'City:' %>
-        <%= address_form.text_field :city %>
-      </div>
-      <div class="field">
-        <%= address_form.label :country, 'Country:' %>
-        <%= address_form.text_field :country %>
-      </div>
-      <div class="field">
-        <%= address_form.label :pincode, 'Pincode:' %>
-        <%= address_form.text_field :pincode %>
-      </div>
-    <% end %>
     <div class="field">
       <%= form.label :password, 'Password:' %>
       <%= form.password_field :password, size: 40 %>
@@ -47,6 +29,8 @@
           id: :user_password_confirmation,
           size: 40 %>
     </div>
+    <h3>Address Details</h3>
+    <%= render partial: 'shared/forms/address', locals: { form: form, address: user.address } %>
     <div class="actions">
       <%= form.submit %>
     </div>

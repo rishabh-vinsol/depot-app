@@ -31,7 +31,7 @@ class Order < ApplicationRecord
       payment_method = :check
       payment_details[:routing] = pay_type_params[:routing_number]
       payment_details[:account] = pay_type_params[:account_number]
-    when "Credit Card"
+    when "Credit card"
       payment_method = :credit_card
       month, year = pay_type_params[:expiration_date].split(//)
       payment_details[:cc_num] = pay_type_params[:credit_card_number]
@@ -49,7 +49,7 @@ class Order < ApplicationRecord
     )
 
     if payment_result.succeeded?
-      OrderMailer.received(self).deliver_later
+      OrderMailer.with(order: self).received.deliver_later
     else
       raise payment_result.error
     end

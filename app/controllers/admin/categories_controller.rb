@@ -18,7 +18,7 @@ class Admin::CategoriesController < AdminController
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to categories_url(@category), notice: "Category was successfully created." }
+        format.html { redirect_to categories_url(@category), notice: t('.success') }
         format.json { render :show, status: :created, location: @category }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -32,7 +32,7 @@ class Admin::CategoriesController < AdminController
     @category.destroy
 
     respond_to do |format|
-      format.html { redirect_to categories_url, notice: "Product was successfully destroyed." }
+      format.html { redirect_to categories_url, notice: t('.success') }
       format.json { head :no_content }
     end
   end

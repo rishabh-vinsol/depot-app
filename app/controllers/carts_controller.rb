@@ -27,7 +27,7 @@ class CartsController < ApplicationController
 
     respond_to do |format|
       if @cart.save
-        format.html { redirect_to cart_url(@cart), notice: "Cart was successfully created." }
+        format.html { redirect_to cart_url(@cart), notice: t('.success') }
         format.json { render :show, status: :created, location: @cart }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class CartsController < ApplicationController
   def update
     respond_to do |format|
       if @cart.update(cart_params)
-        format.html { redirect_to cart_url(@cart), notice: "Cart was successfully updated." }
+        format.html { redirect_to cart_url(@cart), notice: t('.success') }
         format.json { render :show, status: :ok, location: @cart }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -55,7 +55,7 @@ class CartsController < ApplicationController
     session[:cart_id] = nil
 
     respond_to do |format|
-      format.html { redirect_to store_index_url, notice: "Your cart is currently empty." }
+      format.html { redirect_to store_index_url, notice: t('.empty') }
       format.json { head :no_content }
     end
   end
