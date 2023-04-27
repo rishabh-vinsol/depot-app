@@ -7,8 +7,8 @@ end
 
 class User < ApplicationRecord
   enum language: {
-    "English" => "en",
-    "Spanish" => "es",
+    English: "en",
+    Spanish: "es",
   }
 
   has_many :orders, dependent: :destroy
