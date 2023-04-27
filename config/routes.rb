@@ -16,11 +16,11 @@ Rails.application.routes.draw do
   get "sessions/create"
   get "sessions/destroy"
   resources :users do
-    get "orders", on: :collection
-    get "line_items", on: :collection
+    get :orders, on: :collection
+    get :line_items, on: :collection
   end
 
-  get "myorders", to: "users#orders"
+  get "my-orders", to: "users#orders"
   get "my-items", to: "users#line_items"
 
   resources :products, path: '/books' do
