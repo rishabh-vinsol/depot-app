@@ -53,6 +53,10 @@ en:
       title: "Your Cart" 
       empty: "Empty cart" 
       checkout: "Checkout"
+    errors:
+      access_invalid_cart: "Attempt to access invalid cart %{cart_id}"
+      invalid_cart: "Invalid Cart"
+
   number:
     currency:
       format:
@@ -117,13 +121,21 @@ en:
         success: "Category was successfully created."
       destroy:
         success: "Category was successfully destroyed."
-      
-      
+    errors: 
+      access_denied: "You don't have privilege to access this section"
+  
+  application:
+    errors: 
+      login_message: "Please log in" 
+      translation_unavailable: "%{input_locale} translation not available"   
   
 
   users:
     destroy:
       success: "User was successfully destroyed."
+    errors:
+      invalid_user: "Invalid user"
+      access_invalid_user: "Attempt to access invalid user %{user_id}"
 
   activerecord:
     errors: 

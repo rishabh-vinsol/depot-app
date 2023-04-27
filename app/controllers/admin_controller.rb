@@ -9,7 +9,7 @@ class AdminController < ApplicationController
   private
 
   def authenticate_admin!
-    redirect_to store_index_path, notice: "You don't have privilege to access this section" unless @user.role == "admin"
+    redirect_to store_index_path, notice: t('admin.errors.access_denied') unless @user.role == "admin"
   end
 
   def set_user

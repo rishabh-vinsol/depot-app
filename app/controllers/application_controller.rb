@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
 
   def authorize
     unless current_user
-      redirect_to login_url, notice: "Please log in"
+      redirect_to login_url, alert: t('application.errors.login_message')
     end
   end
 
@@ -27,8 +27,7 @@ class ApplicationController < ActionController::Base
       if I18n.available_locales.map(&:to_s).include?(params[:locale])
         I18n.locale = params[:locale]
       else
-        flash.now[:notice] =
-          "#{params[:locale]} translation not available"
+        flash.now[:notice] = t('application.errors.translation_unavailable', input_locale: params[:locale])
         logger.error flash.now[:notice]
       end
     end
