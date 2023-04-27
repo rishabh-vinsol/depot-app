@@ -2,7 +2,7 @@ class OrderMailer < ApplicationMailer
   default from: "Sam Ruby <depot@example.com>"
 
   def received
-    @order = params[:order]
+    @order = Order.find_by(id: params[:order_id])
 
     @order.line_items.each do |line_item|
       product = line_item.product
@@ -20,7 +20,7 @@ class OrderMailer < ApplicationMailer
   end
 
   def shipped
-    @order = params[:order]
+    @order = Order.find_by(id: params[:order_id])
 
     mail to: @order.email
   end

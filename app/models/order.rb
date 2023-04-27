@@ -49,7 +49,7 @@ class Order < ApplicationRecord
     )
 
     if payment_result.succeeded?
-      OrderMailer.with(order: self).received.deliver_later
+      OrderMailer.with(order_id: id).received.deliver_later
     else
       raise payment_result.error
     end
