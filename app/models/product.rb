@@ -22,7 +22,6 @@ class Product < ApplicationRecord
   validates :image_url, allow_blank: true, url: true
   validates :permalink, uniqueness: true, format: { with: PERMALINK_FORMAT }
   validates_length_of :words_in_permalink, minimum: 3
-  validates :category_id, presence: true
   validates :images, length: {maximum: 3}
 
   scope :enabled_products, -> {
