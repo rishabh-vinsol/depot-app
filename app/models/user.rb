@@ -6,6 +6,10 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  enum role: {
+    user: 0,
+    admin: 1,
+  }
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
   has_one :address, inverse_of: :user, dependent: :destroy

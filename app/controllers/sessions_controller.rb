@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
     if user.try(:authenticate, params[:password])
       session[:user_id] = user.id
       user.update_column(:last_activity_time, Time.current)
-      redirect_to user.role == "admin" ? admin_reports_path : admin_url
+      redirect_to user.admin? ? admin_reports_path : admin_url
     else
       redirect_to login_url, alert: "Invalid user/password combination"
     end

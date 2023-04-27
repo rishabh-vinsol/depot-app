@@ -9,10 +9,10 @@ class AdminController < ApplicationController
   private
 
   def authenticate_admin!
-    redirect_to store_index_path, notice: "You don't have privilege to access this section" unless @user.role == "admin"
+    redirect_to store_index_path, notice: "You don't have privilege to access this section" unless @user.admin?
   end
 
   def set_user
-    @user = User.find(session[:user_id])
+    @user = User.find_by(id: session[:user_id])
   end
 end
