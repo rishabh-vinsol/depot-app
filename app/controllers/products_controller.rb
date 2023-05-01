@@ -6,9 +6,9 @@ class ProductsController < ApplicationController
   # GET /products or /products.json
   def index
     if params[:category_id]
-      @products = Product.where(category_id: params[:category_id])
+      @products = Product.where(category_id: params[:category_id]).includes(:ratings)
     else
-      @products = Product.order(:title)
+      @products = Product.order(:title).includes(:ratings)
     end
     respond_to do |format|
       format.html

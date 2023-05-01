@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   end
 
   resources :support_requests, only: [:index, :update]
+  resources :ratings, only: :create
 
   scope "(:locale)" do
     resources :orders
@@ -35,4 +36,5 @@ Rails.application.routes.draw do
     resources :carts
     root "store#index", as: "store_index", via: :all
   end
+
 end
