@@ -11,6 +11,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  has_many :ratings, dependent: :destroy
   has_many_attached :images
   belongs_to :category, counter_cache: true
   # before_destroy :ensure_not_referenced_by_any_line_item
@@ -35,6 +36,10 @@ class Product < ApplicationRecord
 
   def self.titles_present_in_line_items
     joins(:line_items).select(:id, :title).distinct
+  end
+
+  def average_rating
+    ratings.average(:points) || 'Be first one to rate'
   end
 
   private
