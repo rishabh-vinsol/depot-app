@@ -6,14 +6,26 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+
+  ### ASSOCIATIONS ###
+
+  has_one :address, inverse_of: :user, dependent: :destroy
   has_many :orders, dependent: :destroy
   has_many :line_items, through: :orders
-  before_update :check_admin_email
-  before_destroy :check_admin_email
-  after_create_commit :send_welcome_email
-  after_destroy :ensure_an_admin_remains
+  accepts_nested_attributes_for :address, allow_destroy: true
+
+  ### VALIDATIONS ###
+
   validates :name, presence: true, uniqueness: true
   validates :email, uniqueness: true, email: true
+
+  ### CALLBACKS ###
+
+  before_update :check_admin_email
+  before_destroy :check_admin_email
+  after_destroy :ensure_an_admin_remains
+  after_create_commit :send_welcome_email
+  
   has_secure_password
 
   class Error < StandardError

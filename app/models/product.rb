@@ -11,6 +11,7 @@ class Product < ApplicationRecord
   has_many :line_items, dependent: :restrict_with_error
   has_many :orders, through: :line_items
   has_many :carts, through: :line_items
+  has_many_attached :images
   belongs_to :category, counter_cache: true
   # before_destroy :ensure_not_referenced_by_any_line_item
   validates :title, :description, :image_url, presence: true
@@ -21,6 +22,7 @@ class Product < ApplicationRecord
   validates :image_url, allow_blank: true, url: true
   validates :permalink, uniqueness: true, format: { with: PERMALINK_FORMAT }
   validates_length_of :words_in_permalink, minimum: 3
+  validates :images, length: {maximum: 3}
 
   scope :enabled_products, -> {
           where(enabled: true)

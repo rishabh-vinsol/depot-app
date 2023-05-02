@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  layout 'my_orders', only: [:orders, :line_items]
   before_action :set_user, only: %i[ show edit update destroy ]
   rescue_from ActiveRecord::RecordNotFound, with: :invalid_user
 
@@ -14,6 +15,7 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+    @user.build_address
   end
 
   # GET /users/1/edit
@@ -23,7 +25,6 @@ class UsersController < ApplicationController
   # POST /users or /users.json
   def create
     @user = User.new(user_params)
-
     respond_to do |format|
       if @user.save
         format.html {
@@ -88,7 +89,7 @@ class UsersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def user_params
-    params.require(:user).permit(:name, :password, :password_confirmation, :email)
+    params.require(:user).permit(:name, :password, :password_confirmation, :email, address_attributes: [:city, :state, :country, :pincode, :_destroy])
   end
 
   def invalid_user

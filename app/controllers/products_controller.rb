@@ -1,9 +1,15 @@
 class ProductsController < ApplicationController
+  include ProductsHelper
+
   before_action :set_product, only: %i[ show edit update destroy ]
 
   # GET /products or /products.json
   def index
     @products = Product.all.order(:title)
+    respond_to do |format|
+      format.html
+      format.json { render json: @products.left_outer_joins(:category).select("products.title, categories.name as Category") }
+    end
   end
 
   # GET /products/1 or /products/1.json
@@ -22,7 +28,6 @@ class ProductsController < ApplicationController
   # POST /products or /products.json
   def create
     @product = Product.new(product_params)
-
     respond_to do |format|
       if @product.save
         format.html { redirect_to product_url(@product), notice: "Product was successfully created." }
@@ -41,8 +46,9 @@ class ProductsController < ApplicationController
         format.html { redirect_to product_url(@product), notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
         @products = Product.all.order(:title)
-        ActionCable.server.broadcast "products",
-                                     html: render_to_string("store/index", layout: false)
+        ActionCable.server.broadcast("products", {
+          html: render_to_string("store/index", layout: false),
+        })
       else
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
@@ -79,6 +85,7 @@ class ProductsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def product_params
-    params.require(:product).permit(:title, :description, :image_url, :price, :enabled, :discount_price, :permalink)
+    params.require(:product).permit(:title, :description, :image_url,
+                                    :price, :enabled, :discount_price, :permalink, :category_id, images: [])
   end
 end
