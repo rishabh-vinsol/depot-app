@@ -1,0 +1,14 @@
+<h1>Order Confirmed</h1>
+<h3>Products Ordered</h3>
+<table>
+  <tr>
+  <th>Quantity</th>
+  <th colspan=2>Description</th>
+  <th>Price</th>
+  </tr>
+    <%= render partial: 'order_mailer/line_item', collection: @order.line_items %>
+</table>
+<p>
+  Your order is confirmed. Hurrayy!!!<br>
+  Thanks for shopping with us.
+</p>

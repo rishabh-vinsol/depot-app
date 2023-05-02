@@ -146,9 +146,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_26_095117) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email"
-    t.string "language", default: "en"
     t.datetime "last_activity_time", default: "2023-04-26 07:51:44"
     t.integer "role", default: 0
+    t.integer "language", default: 0
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

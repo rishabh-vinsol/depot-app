@@ -29,7 +29,7 @@ class UsersController < ApplicationController
       if @user.save
         format.html {
           redirect_to users_url,
-                      notice: "User #{@user.name} was successfully created."
+                      notice: t(".created")
         }
 
         format.json { render :show, status: :created, location: @user }
@@ -93,7 +93,7 @@ class UsersController < ApplicationController
   end
 
   def invalid_user
-    logger.error "Attempt to access invalid user #{params[:user_id]}"
-    redirect_to users_url, status: :not_found, notice: "Invalid user"
+    logger.error t('users.errors.access_invalid_user', user_id: params[:user_id])
+    redirect_to users_url, status: :not_found, notice: t('users.errors.invalid_user')
   end
 end

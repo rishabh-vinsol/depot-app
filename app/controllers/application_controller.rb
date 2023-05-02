@@ -2,6 +2,8 @@ class ApplicationController < ActionController::Base
   before_action :set_i18n_locale_from_params
   before_action :authorize
   before_action :increment_hit_counter
+
+  around_action :setup_locale
   before_action :check_user_activity_time
   around_action :add_response_time_header
 
@@ -11,7 +13,7 @@ class ApplicationController < ActionController::Base
 
   def authorize
     unless current_user
-      redirect_to login_url, notice: "Please log in"
+      redirect_to login_url, alert: t('application.errors.login_message')
     end
   end
 
@@ -24,8 +26,7 @@ class ApplicationController < ActionController::Base
       if I18n.available_locales.map(&:to_s).include?(params[:locale])
         I18n.locale = params[:locale]
       else
-        flash.now[:notice] =
-          "#{params[:locale]} translation not available"
+        flash.now[:notice] = t('application.errors.translation_unavailable', input_locale: params[:locale])
         logger.error flash.now[:notice]
       end
     end
@@ -44,6 +45,10 @@ class ApplicationController < ActionController::Base
     response.headers["x-responded-in"] = "#{time_taken}ms"
   end
 
+  def setup_locale(&action)
+    I18n.with_locale(User.languages[@user_logged_in.try(:language) || :en], &action)
+  end
+
   def check_user_activity_time
     return unless current_user
     if current_user.last_activity_time < 5.minutes.ago
@@ -53,4 +58,5 @@ class ApplicationController < ActionController::Base
       current_user.update_column(:last_activity_time, Time.current)
     end
   end
+
 end

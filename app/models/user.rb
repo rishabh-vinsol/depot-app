@@ -6,6 +6,10 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  enum language: { 
+    en: 0, 
+    es: 1 
+  }
   enum role: {
     user: 0,
     admin: 1,
@@ -22,6 +26,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
   validates :email, uniqueness: true, email: true
+  validates :language, inclusion: languages.keys
 
   ### CALLBACKS ###
 
@@ -29,7 +34,7 @@ class User < ApplicationRecord
   before_destroy :check_admin_email
   after_destroy :ensure_an_admin_remains
   after_create_commit :send_welcome_email
-  
+
   has_secure_password
 
   class Error < StandardError

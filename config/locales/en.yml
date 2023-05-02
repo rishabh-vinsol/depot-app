@@ -32,6 +32,7 @@
 en:
   layouts:
     application:
+      login: "Please log in"
       title: "The Pragmatic Bookshelf" 
       home: "Home"
       questions: "Questions"
@@ -42,10 +43,20 @@ en:
       title_html: "Your Pragmatic Catalog" 
       add_html: "Add to Cart"
   carts: 
+    create:
+      success: "Cart was successfully created."
+    update:
+      success: "Cart was successfully updated."
+    destroy:
+      empty: "Your cart is currently empty."
     cart:
       title: "Your Cart" 
       empty: "Empty cart" 
       checkout: "Checkout"
+    errors:
+      access_invalid_cart: "Attempt to access invalid cart %{cart_id}"
+      invalid_cart: "Invalid Cart"
+
   number:
     currency:
       format:
@@ -55,7 +66,25 @@ en:
         delimiter: "," 
         format: "%u%n"
 
+  sessions:
+    create:
+      invalid: "Invalid user/password combination"
+    destroy:
+      logged_out: "Logged out"
+  
+  line_items:
+    update:
+      success: "Line item was successfully updated."
+    destroy:
+      success: "Line item was successfully destroyed."
+
   orders: 
+    create:
+      thanks: "Thank you for your order"
+    update:
+      success: "Order was successfully updated."
+    destroy:
+      success: "Order was successfully destroyed."
     new:
       legend: "Please Enter Your Details"
     form:
@@ -77,12 +106,36 @@ en:
       expiration_date: "Expiry"
     purchase_order_pay_type: 
       po_number: "PO #"
-      
-  thanks: "Thank you for your order"
+  
+  products:
+    create:
+      success: "Product was successfully created."
+    update:
+      success: "Product was successfully updated."
+    destroy:
+      success: "Product was successfully destroyed."
+  
+  admin:
+    categories:
+      create:
+        success: "Category was successfully created."
+      destroy:
+        success: "Category was successfully destroyed."
+    errors: 
+      access_denied: "You don't have privilege to access this section"
+  
+  application:
+    errors: 
+      login_message: "Please log in" 
+      translation_unavailable: "%{input_locale} translation not available"   
+  
 
   users:
     destroy:
       success: "User was successfully destroyed."
+    errors:
+      invalid_user: "Invalid user"
+      access_invalid_user: "Attempt to access invalid user %{user_id}"
 
   activerecord:
     errors: 
@@ -106,3 +159,11 @@ en:
     previous: "Previous"
     page: "Page %{page}"
     more: "Load more"
+
+  order_mailer:
+    received:
+      subject: "Pragmatic Store Order Confirmation"
+    shipped:
+      subject: "Pragmatic Store Order Shipped"
+    confirmed:
+      subject: "Pragmatic Store Order Confirmation Details"
