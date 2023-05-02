@@ -1,4 +1,4 @@
-class CategoriesController < ApplicationController
+class Admin::CategoriesController < AdminController
   def index
     @categories = Category.includes(:subcategories).where(parent_id: nil)
   end

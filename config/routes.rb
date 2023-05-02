@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
   get "admin" => "admin#index"
+  namespace :admin do
+    get "reports" => "reports#index"
+    resources :categories
+  end
   controller :sessions do
     get "login" => :new
     post "login" => :create
@@ -15,7 +19,7 @@ Rails.application.routes.draw do
     get :who_bought, on: :member
   end
 
-  resources :categories
+  # resources :categories
 
   resources :support_requests, only: [:index, :update]
 

@@ -6,6 +6,10 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
+  enum role: {
+    user: 0,
+    admin: 1,
+  }
 
   ### ASSOCIATIONS ###
 
