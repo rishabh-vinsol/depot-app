@@ -8,7 +8,8 @@ class SessionsController < ApplicationController
     user = User.find_by(name: params[:name])
     if user.try(:authenticate, params[:password])
       session[:user_id] = user.id
-      redirect_to user.role == 'admin' ? admin_reports_path : store_index_url
+      user.update_column(:last_activity_time, Time.current)
+      redirect_to user.admin? ? admin_reports_path : store_index_url
     else
       redirect_to login_url, alert: t('.invalid')
     end

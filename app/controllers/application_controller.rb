@@ -2,11 +2,10 @@ class ApplicationController < ActionController::Base
   before_action :set_i18n_locale_from_params
   before_action :authorize
   before_action :increment_hit_counter
-  before_action :set_start_time
-  # before_action :check_session_timeout
-  # before_action :update_last_activity_at
+
   around_action :setup_locale
-  after_action :add_response_time
+  before_action :check_user_activity_time
+  around_action :add_response_time_header
 
   attr_accessor :last_activity
 
@@ -39,12 +38,10 @@ class ApplicationController < ActionController::Base
     @hit_counter = session[:hit_counter]
   end
 
-  def set_start_time
-    @start_time = Time.now
-  end
-
-  def add_response_time
-    time_taken = (Time.now - @start_time) * 1000
+  def add_response_time_header
+    start_time = Time.now
+    yield
+    time_taken = (Time.now - start_time) * 1000
     response.headers["x-responded-in"] = "#{time_taken}ms"
   end
 
@@ -52,15 +49,14 @@ class ApplicationController < ActionController::Base
     I18n.with_locale(User.languages[@user_logged_in.try(:language) || :en], &action)
   end
 
-  # def update_last_activity_at
-  #   debugger
-  #   session["last_activity_time"] = Time.now
-  # end
+  def check_user_activity_time
+    return unless current_user
+    if current_user.last_activity_time < 5.minutes.ago
+      session[:user_id] = nil
+      redirect_to login_url, alert: "You have been logged out due to inactivity."
+    else
+      current_user.update_column(:last_activity_time, Time.current)
+    end
+  end
 
-  # def check_session_timeout
-  #   debugger
-  #   # if session['last_activity_time'] && session['last_activity_time'] < 10.seconds.ago
-  #   #   redirect_to sessions_destroy_path
-  #   # end
-  # end
 end

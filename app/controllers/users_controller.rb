@@ -71,12 +71,12 @@ class UsersController < ApplicationController
   end
 
   def orders
-    @user = User.find(params[:user_id])
+    @user = User.find(session[:user_id])
     @orders = @user.orders
   end
 
   def line_items
-    @user = User.find(params[:user_id])
+    @user = User.find(session[:user_id])
     @line_items = @user.line_items.page(params[:page])
   end
 
