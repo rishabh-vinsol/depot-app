@@ -6,9 +6,9 @@ class EmailValidator < ActiveModel::EachValidator
 end
 
 class User < ApplicationRecord
-  enum language: {
-    English: "en",
-    Spanish: "es",
+  enum language: { 
+    en: 0, 
+    es: 1 
   }
 
   has_many :orders, dependent: :destroy
